@@ -22,10 +22,14 @@ func sendKafkaMessage(producer sarama.SyncProducer, val int, topic string) error
 		Value: sarama.StringEncoder(strconv.Itoa(val)),
 	}
 
-	_, _, err := producer.SendMessage(msg)
+	partition, offset, err := producer.SendMessage(msg)
 	if err != nil {
 		return err
 	}
+
+	log.Printf("Partition for %d is %d \n ", val, partition)
+	log.Printf("Offset for %d is %d \n ", val, offset)
+
 	return nil
 }
 
