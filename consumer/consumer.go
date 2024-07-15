@@ -63,6 +63,9 @@ func (consumer *Consumer) ConsumeClaim(
 	for msg := range claim.Messages() {
 		topic := msg.Topic
 
+		partition:=msg.Partition
+		offset:=msg.Offset
+
 		key := string(msg.Key)
 		log.Println("Key is ", key)
 		value, err := strconv.Atoi(string(msg.Value))
@@ -73,6 +76,8 @@ func (consumer *Consumer) ConsumeClaim(
 
 		log.Println("value is ", value)
 		log.Printf("This value %d is from topic %s \n",value,topic)
+		log.Printf("The value %d is from offset %d \n",value,offset)
+		log.Printf("The value %d is from  partition %d \n",value,partition)
 
 		consumer.store.Add(value)
 		sess.MarkMessage(msg, "")
