@@ -79,4 +79,5 @@ func main() {
 	defer producer.Close()
 
 	sendMessageFunction(producer)
+
 }

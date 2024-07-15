@@ -61,6 +61,8 @@ func (consumer *Consumer) ConsumeClaim(
 	sess sarama.ConsumerGroupSession, claim sarama.ConsumerGroupClaim,
 ) error {
 	for msg := range claim.Messages() {
+		topic := msg.Topic
+
 		key := string(msg.Key)
 		log.Println("Key is ", key)
 		value, err := strconv.Atoi(string(msg.Value))
@@ -70,6 +72,8 @@ func (consumer *Consumer) ConsumeClaim(
 		}
 
 		log.Println("value is ", value)
+		log.Printf("This value %d is from topic %s \n",value,topic)
+
 		consumer.store.Add(value)
 		sess.MarkMessage(msg, "")
 	}
@@ -136,4 +140,5 @@ func main() {
 	defer cancel()
 
 	getData(store)
+
 }
